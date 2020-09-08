@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# The backup server
+BACKUPSERVER="pi@192.168.0.129"
+
+# The name of the backup
+BACKUP_NAME=$(date -I)
+
+colored_output -t i -m "starting backup $BACKUP_NAME"
+borg create --progress --exclude ~/.cache $BACKUPSERVER:/mnt/archive/$(hostname)::$BACKUP_NAME ~ 
+colored_output -t i -m "backup finished. exiting"
