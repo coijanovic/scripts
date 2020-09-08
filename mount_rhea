@@ -2,9 +2,15 @@
 
 # rhea's ip address
 server=192.168.0.129                    
+user=$USER
 
 # [TODO] add ping test
 
-mount $server:/mnt/data/Documents       $HOME/Documents
-mount $server:/mnt/data/Pictures        $HOME/Pictures
-mount $server:/mnt/data/Music           $HOME/Music
+# mount
+sudo mount $server:/mnt/data/Documents       $HOME/Documents
+sudo mount $server:/mnt/data/Pictures        $HOME/Pictures
+sudo mount $server:/mnt/data/Music           $HOME/Music
+
+# [TODO] test mounts
+
+exit
