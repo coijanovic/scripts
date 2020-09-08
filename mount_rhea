@@ -4,29 +4,17 @@
 server=192.168.0.129                    
 user=$USER
 
-# output fucntions
-print_error() {
-    echo -e "\e[1m\e[31m[ERROR]\e[0m" $1 
-}
-print_success() {
-    echo -e "\e[1m\e[32m[SUCCESS]\e[0m" $1 
-}
-print_info() {
-    echo -e "\e[1m\e[34m[INFO]\e[0m" $1 
-}
 
 # [TODO] add ping test
-print_info "pinging rhea"
-print_error "rhea not reachable"
-print_success "rhea reachable"
-
-exit
+colored_output -t i -m "Pinging rhea"
 
 # mount
+colored_output -t i -m "Mounting NFS shares"
 sudo mount $server:/mnt/data/Documents       $HOME/Documents
 sudo mount $server:/mnt/data/Pictures        $HOME/Pictures
 sudo mount $server:/mnt/data/Music           $HOME/Music
 
 # [TODO] test mounts
 
+colored_output -t i -m "Exiting"
 exit
