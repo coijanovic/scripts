@@ -5,16 +5,32 @@ server=192.168.0.129
 user=$USER
 
 
-# [TODO] add ping test
+# Test if rhea is reachable
 colored_output -t i -m "Pinging rhea"
+ping -c1 -w1 $server &> /dev/null
+r=$?
+if [ $r -eq 0 ]; then
+    colored_output -t s -m "rhea reachable"
+else
+    colored_output -t e -m "rhea not reachable. Exiting"
+    exit
+fi
 
 # mount
 colored_output -t i -m "Mounting NFS shares"
 sudo mount $server:/mnt/data/Documents       $HOME/Documents
+RET=$?
 sudo mount $server:/mnt/data/Pictures        $HOME/Pictures
+RET=$?:$RET
 sudo mount $server:/mnt/data/Music           $HOME/Music
+RET=$?:$RET
 
-# [TODO] test mounts
+if [ $RET -eq "000" ]; then
+    colored_output -t s -m "Mounted shares"
+else
+    colored_output -t e -m "Mounting failed. Exiting"
+    exit
+fi
 
-colored_output -t i -m "Exiting"
+colored_output -t i -m "Finished. Exiting"
 exit
