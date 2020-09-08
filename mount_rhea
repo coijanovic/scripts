@@ -1,0 +1,7 @@
+#! /bin/sh
+
+# [TODO] add ping test
+
+mount 192.168.0.129:/mnt/data/Documents       /home/christoph/Documents
+mount 192.168.0.129:/mnt/data/Pictures        /home/christoph/Pictures
+mount 192.168.0.129:/mnt/data/Music           /home/christoph/Music
