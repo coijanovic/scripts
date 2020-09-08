@@ -1,0 +1,15 @@
+#! /bin/sh
+
+while getopts t:m: option 
+do
+case "$option" in
+t) TYPE=${OPTARG};;
+m) MESSAGE=${OPTARG};;
+esac
+done
+
+case "$TYPE" in
+"e") echo -e "\e[1m\e[31m[ERROR]\e[0m" $MESSAGE;;
+"s") echo -e "\e[1m\e[32m[SUCCESS]\e[0m" $MESSAGE;;
+*) echo -e "\e[1m\e[34m[INFO]\e[0m" $MESSAGE;;
+esac
