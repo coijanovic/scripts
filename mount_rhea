@@ -19,13 +19,13 @@ fi
 # mount
 colored_output -t i -m "Mounting NFS shares"
 sudo mount $server:/mnt/data/Documents       $HOME/Documents
-RET=$?
+RET1=$?
 sudo mount $server:/mnt/data/Pictures        $HOME/Pictures
-RET=$?:$RET
+RET2=$?
 sudo mount $server:/mnt/data/Music           $HOME/Music
-RET=$?:$RET
+RET3=$?
 
-if [ $RET -eq "000" ]; then
+if [ $RET1 -eq 0 ] && [ $RET2 -eq 0 ] && [ $RET3 -eq 0 ]; then
     colored_output -t s -m "Mounted shares"
 else
     colored_output -t e -m "Mounting failed. Exiting"
