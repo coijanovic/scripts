@@ -10,7 +10,8 @@ BU_LOC="$BS_USER@$BS_IP:$BS_PATH::$(date -I)"
 
 # The backup sources
 BU_INCLUDE="$HOME"
+BU_EXCLUDE="$HOME/Code/scripts/backupexcludes.txt"
 
 colored_output -t i -m "starting backup at $BU_LOC"
-borg create --progress --exclude-from backupexcludes.txt $BU_LOC $BU_INCLUDE 
+borg create --progress --exclude-from $BU_EXCLUDE $BU_LOC $BU_INCLUDE 
 colored_output -t i -m "backup finished. Exiting"
