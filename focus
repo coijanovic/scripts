@@ -1,0 +1,29 @@
+#! /bin/sh
+
+default="
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+"
+blocklist="
+# User Added
+127.0.0.1   arstechnica.com
+127.0.0.1   www.zeit.de
+127.0.0.1   www.reddit.com
+127.0.0.1   www.heise.de
+127.0.0.1   www.golem.de
+"
+
+if [ "$1" == "off" ]; then
+    colored_output -t i -m "deactivating focus"
+    echo "$default" | sudo tee /etc/hosts
+    colored_output -t s -m "focus deactivated"
+else
+    hl=$(wc -l /etc/hosts | cut -d " " -f 1)
+    if [ $hl -gt 4 ]; then
+        colored_output -t e -m "focus already active"
+    else
+        colored_output -t i -m "activating focus"
+        echo "$default" "$blocklist" | sudo tee /etc/hosts
+    fi
+fi
+    
