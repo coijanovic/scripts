@@ -1,0 +1,15 @@
+#! /bin/sh
+
+# This script opens all work-related programms and moves them to their assigned workspaces
+
+sway exec "firefox-wayland"
+sway for_window [app_id="firefox"] move workspace 2
+
+sway exec "thunderbird"
+sway for_window [class="Thunderbird"] move workspace 3
+
+sway exec "okular"
+sway for_window [app_id="okular"] move workspace 6
+
+sway exec "alacritty --class cmus -e 'cmus'"
+sway for_window [app_id="cmus"] move workspace 7
