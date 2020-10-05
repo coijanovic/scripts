@@ -1,15 +1,39 @@
 #! /bin/sh
 
-# This script opens all work-related programms and moves them to their assigned workspaces
+# This script sets up common programm combinations using sway
 
-sway exec "firefox-wayland"
-sway for_window [app_id="firefox"] move workspace 2
+# Open all work-related programms and moves them to their assigned workspaces
+work () {
+    colored_output -t i -m "Setting up Work." 
+    sway exec "firefox-wayland"
+    sway for_window [app_id="firefox"] move workspace 2
 
-sway exec "thunderbird"
-sway for_window [class="Thunderbird"] move workspace 3
+    sway exec "thunderbird"
+    sway for_window [class="Thunderbird"] move workspace 3
 
-sway exec "okular"
-sway for_window [app_id="okular"] move workspace 6
+    sway exec "okular"
+    sway for_window [app_id="okular"] move workspace 6
 
-sway exec "alacritty --class cmus -e 'cmus'"
-sway for_window [app_id="cmus"] move workspace 7
+    sway exec "alacritty --class cmus -e 'cmus'"
+    sway for_window [app_id="cmus"] move workspace 7
+    colored_output -t s -m "Finished."
+}
+
+# Open chromium with tabs needed for the board meeting and move to assigned workspace
+board () {
+    colored_output -t i -m "Setting up Board Meeting." 
+    sway exec "chromium-browser https://i63board.tm.kit.edu/?controller=BoardViewController\&action=show\&project_id=6# https://i62bbb.tm.kit.edu/b/tho-3wz-23e"
+    sway for_window [class="Chromium-browser"] move workspace 4
+    sway workspace 4
+    colored_output -t s -m "Finished."
+}
+
+shopt -s extglob
+case "$1" in
+    ?(w|wo|wor|work) )
+        work ;;
+    ?(b|bo|boa|boar|board) )
+        board ;;
+    *)
+        colored_output -t e -m "Unkown Option. Available: setup [work|board]"
+esac
