@@ -22,9 +22,14 @@ work () {
 # Open chromium with tabs needed for the board meeting and move to assigned workspace
 board () {
     colored_output -t i -m "Setting up Board Meeting." 
-    sway exec "chromium-browser https://i63board.tm.kit.edu/?controller=BoardViewController\&action=show\&project_id=6# https://i62bbb.tm.kit.edu/b/tho-3wz-23e"
+
+    board_url="https://i63board.tm.kit.edu/?controller=BoardViewController\&action=show\&project_id=6#"
+    bbb_url="https://i62bbb.tm.kit.edu/b/tho-3wz-23e"
+
+    sway exec "chromium-browser $board_url $bbb_url"
     sway for_window [class="Chromium-browser"] move workspace 4
     sway workspace 4
+
     colored_output -t s -m "Finished."
 }
 
