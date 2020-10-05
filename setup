@@ -33,12 +33,25 @@ board () {
     colored_output -t s -m "Finished."
 }
 
+# Open signal
+signal () {
+    colored_output -t i -m "Setting up Signal"
+
+    sway exec "flatpak run org.signal.Signal"
+    sway for_window [class="Signal"] move workspace 8
+    sway workspace 8
+
+    colored_output -t s -m "Finished."
+}
+
 shopt -s extglob
 case "$1" in
     ?(w|wo|wor|work) )
         work ;;
     ?(b|bo|boa|boar|board) )
         board ;;
+    ?(s|si|sig|sign|signa|signal) )
+        signal ;;
     *)
-        colored_output -t e -m "Unkown Option. Available: setup [work|board]"
+        colored_output -t e -m "Unkown Option. Available: setup [work|board|signal]"
 esac
