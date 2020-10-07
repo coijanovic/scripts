@@ -1,4 +1,0 @@
-/home/christoph/.cache
-/home/christoph/Documents
-/home/christoph/Pictures
-/home/christoph/Music
