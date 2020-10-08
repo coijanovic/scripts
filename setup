@@ -6,7 +6,7 @@
 work () {
     colored_output -t i -m "Setting up Work." 
 
-    riot_url="i62riot.tm.kit.edu"
+    riot_url="https://i62riot.tm.kit.edu"
     calendar_url="https://i62nextcloud.tm.kit.edu/index.php/apps/calendar/timeGridWeek/now"
     board_url="https://i63board.tm.kit.edu/?controller=BoardViewController\&action=show\&project_id=6#"
 
