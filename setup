@@ -49,6 +49,17 @@ signal () {
     colored_output -t s -m "Finished."
 }
 
+home () {
+    colored_output -t i -m "Setting up Home." 
+
+    sway exec "firefox-wayland"
+    sway for_window [app_id="firefox"] move workspace 2
+
+    mount_rhea
+
+    colored_output -t s -m "Finished."
+}
+
 shopt -s extglob
 case "$1" in
     ?(w|wo|wor|work) )
@@ -57,6 +68,8 @@ case "$1" in
         board ;;
     ?(s|si|sig|sign|signa|signal) )
         signal ;;
+    ?(h|ho|hom|home) )
+        home ;;
     *)
         colored_output -t e -m "Unkown Option. Available: setup [work|board|signal]"
 esac
