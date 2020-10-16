@@ -7,10 +7,12 @@ work () {
     colored_output -t i -m "Setting up Work." 
 
     riot_url="https://i62riot.tm.kit.edu"
-    calendar_url="https://i62nextcloud.tm.kit.edu/index.php/apps/calendar/timeGridWeek/now"
     board_url="https://i63board.tm.kit.edu/?controller=BoardViewController\&action=show\&project_id=6#"
 
-    sway exec "firefox-wayland $riot_url $calendar_url $board_url"
+    sway exec "alacritty"
+    sway resize set 33 ppt
+
+    sway exec "firefox-wayland $riot_url $board_url"
     sway for_window [app_id="firefox"] move workspace 2
 
     sway exec "thunderbird"
