@@ -1,0 +1,78 @@
+#! /bin/sh
+# This script detects if and where the computer is docked 
+# and applies appropirate settings
+
+DOCK="none"
+
+which_dock () {
+    lsusb | rg "CalDigit"
+    a=$?
+    lsusb | rg "Lenovo"
+    b=$?
+    if [ $a -eq "0" ] ;
+    then
+        colored_output -t i -m "Detected CalDigit dock."
+        DOCK="home"
+    elif [ $b -eq "0" ] ;
+    then
+        colored_output -t i -m "Detected Lenovo dock."
+        DOCK="work"
+    else
+        colored_output -t i -m "No dock detected."
+    fi
+}
+
+which_dock
+
+if [ "$DOCK" = "home" ] ;
+then
+    # set resolution, refresh rate and (alacritty) font size
+    sway output DP-4 mode 3840x2160@29.981001Hz
+    sed -i -e "s/size: ..../size: 13.0/g" $HOME/.config/alacritty/alacritty.yml
+
+    # move workspaces
+    swaymsg '[workspace=1]' move workspace to output DP-4
+    swaymsg '[workspace=2]' move workspace to output DP-4
+    swaymsg '[workspace=3]' move workspace to output DP-4
+    swaymsg '[workspace=4]' move workspace to output DP-4
+    swaymsg '[workspace=5]' move workspace to output DP-4
+    swaymsg '[workspace=6]' move workspace to output DP-4
+    swaymsg '[workspace=7]' move workspace to output DP-4
+    swaymsg '[workspace=8]' move workspace to output DP-4
+    swaymsg '[workspace=9]' move workspace to output DP-4
+
+    # connect to bluetooth keyboard
+    kbadr="E0:EB:40:D0:C8:21"
+    bluetoothctl connect $kbadr
+    while [ $? -ne "0" ]
+    do
+        colored-output -t e -m "Could not connect keyboard."
+        read -r -p "Try again? [y/n] " input
+         
+        case $input in
+            [yY][eE][sS]|[yY] )
+                bluetoothctl connect $kbadr ;;
+            [nN][oO]|[nN] )
+                break ;;
+            * )
+                colord_output -t e -m "Unknown input." ;;
+        esac
+    done
+elif [ "$DOCK" = "work" ] ;
+then
+    sed -i -e "s/size: ..../size: 11.0/g" $HOME/.config/alacritty/alacritty.yml
+    # move workspaces
+    swaymsg '[workspace=1]' move workspace to output DP-4
+    swaymsg '[workspace=2]' move workspace to output DP-4
+    swaymsg '[workspace=3]' move workspace to output DP-4
+    swaymsg '[workspace=4]' move workspace to output DP-4
+    swaymsg '[workspace=5]' move workspace to output DP-4
+    swaymsg '[workspace=6]' move workspace to output DP-5
+    swaymsg '[workspace=7]' move workspace to output DP-5
+    swaymsg '[workspace=8]' move workspace to output DP-5
+    swaymsg '[workspace=9]' move workspace to output DP-5
+else
+    sed -i -e "s/size: ..../size: 11.5/g" $HOME/.config/alacritty/alacritty.yml
+
+fi
+colored_output -t s -m "Finished."
