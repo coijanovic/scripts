@@ -5,13 +5,13 @@
 # Open all work-related programms and moves them to their assigned workspaces
 work () {
     colored_output -t i -m "Setting up Work." 
-    sed -i -e "s/size: 13/size: 11/g" .config/alacritty/alacritty.yml
+    dock
 
     riot_url="https://i62riot.tm.kit.edu"
     board_url="https://i63board.tm.kit.edu/?controller=BoardViewController\&action=show\&project_id=6#"
 
-    sway exec "alacritty"
-    sway resize set 33 ppt
+    sway exec "alacritty --class side"
+    swaymsg [app_id="side"] resize set 33 ppt
 
     sway exec "firefox-wayland $riot_url $board_url"
     sway for_window [app_id="firefox"] move workspace 2
@@ -55,29 +55,7 @@ signal () {
 home () {
     colored_output -t i -m "Setting up Home." 
 
-    swaymsg -t get_outputs | rg "DP-3"
-    if [ $? -eq "1" ]
-    then
-        colored_output -t i -m "Detected external monitor."
-        sway output DP-3 mode 3840x2160@29.981001Hz
-        sed -i -e "s/size: 11/size: 13/g" .config/alacritty/alacritty.yml
-    fi
-
-    bluetoothctl connect E0:EB:40:D0:C8:21
-    while [ $? -neq "0" ]
-    do
-        colored-output -t e -m "Could not connect keyboard."
-        read -r -p "Try again? [y/n] " input
-         
-        case $input in
-            [yY][eE][sS]|[yY] )
-                bluetoothctl connect E0:EB:40:D0:C8:21 ;;
-            [nN][oO]|[nN] )
-                break ;;
-            * )
-                colord_output -t e -m "Unknown input." ;;
-        esac
-    done
+    dock
     
     sway exec "firefox-wayland"
     sway for_window [app_id="firefox"] move workspace 2
