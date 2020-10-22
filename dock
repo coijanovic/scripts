@@ -28,51 +28,29 @@ if [ "$DOCK" = "home" ] ;
 then
     # set resolution, refresh rate and (alacritty) font size
     sway output DP-4 mode 3840x2160@29.981001Hz
+    sway output DP-4 position 0 0
+    sway output eDP-1 position 3840 1080
     sed -i -e "s/size: ..../size: 13.0/g" $HOME/.config/alacritty/alacritty.yml
-
-    # move workspaces
-    swaymsg '[workspace=1]' move workspace to output DP-4
-    swaymsg '[workspace=2]' move workspace to output DP-4
-    swaymsg '[workspace=3]' move workspace to output DP-4
-    swaymsg '[workspace=4]' move workspace to output DP-4
-    swaymsg '[workspace=5]' move workspace to output DP-4
-    swaymsg '[workspace=6]' move workspace to output DP-4
-    swaymsg '[workspace=7]' move workspace to output DP-4
-    swaymsg '[workspace=8]' move workspace to output DP-4
-    swaymsg '[workspace=9]' move workspace to output DP-4
 
     # connect to bluetooth keyboard
     kbadr="E0:EB:40:D0:C8:21"
     bluetoothctl connect $kbadr
     while [ $? -ne "0" ]
     do
-        colored-output -t e -m "Could not connect keyboard."
-        read -r -p "Try again? [y/n] " input
-         
-        case $input in
-            [yY][eE][sS]|[yY] )
-                bluetoothctl connect $kbadr ;;
-            [nN][oO]|[nN] )
-                break ;;
-            * )
-                colord_output -t e -m "Unknown input." ;;
-        esac
+        colored_output -t e -m "Could not connect keyboard."
+        sleep 3
+        colored_output -t i -m "Trying again."
+        bluetoothctl connect $kbadr
     done
 elif [ "$DOCK" = "work" ] ;
 then
     sed -i -e "s/size: ..../size: 11.0/g" $HOME/.config/alacritty/alacritty.yml
-    # move workspaces
-    swaymsg '[workspace=1]' move workspace to output DP-4
-    swaymsg '[workspace=2]' move workspace to output DP-4
-    swaymsg '[workspace=3]' move workspace to output DP-4
-    swaymsg '[workspace=4]' move workspace to output DP-4
-    swaymsg '[workspace=5]' move workspace to output DP-4
-    swaymsg '[workspace=6]' move workspace to output DP-5
-    swaymsg '[workspace=7]' move workspace to output DP-5
-    swaymsg '[workspace=8]' move workspace to output DP-5
-    swaymsg '[workspace=9]' move workspace to output DP-5
+    sway output DP-5 transform 270
+    sway output DP-5 position 0 0
+    sway output DP-4 position 1080 220
+    sway output eDP-1 position 3000 1050
 else
     sed -i -e "s/size: ..../size: 11.5/g" $HOME/.config/alacritty/alacritty.yml
-
+    sway output eDP-1 position 0 0
 fi
 colored_output -t s -m "Finished."
