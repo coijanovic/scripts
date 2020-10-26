@@ -18,6 +18,8 @@ work () {
 
     sway exec "thunderbird"
     sway for_window [class="Thunderbird"] move workspace 3
+    pass KIT/christoph/Thunderbird | wl-copy
+    colored_output -t i -m "Thunderbird password copied to clipboard."
 
     sway exec "okular"
     sway for_window [app_id="okular"] move workspace 6
