@@ -1,5 +1,8 @@
 #!/bin/bash
 
+colored_output -t i -m "Copying backup key."
+pass Backup/$(hostname) | wl-copy
+
 # The backup server
 BS_USER="pi"
 BS_IP="rhea.coijanovic.com"
