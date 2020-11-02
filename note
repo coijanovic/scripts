@@ -1,0 +1,13 @@
+#! /bin/bash
+
+cd $HOME/Notes
+
+now=$(date +%Y-%m-%d-%H:%M)
+colored_output -t i -m "Creating a new note."
+
+echo "---
+title: $@
+date: $now
+---" > $now.md
+
+nvim $now.md
