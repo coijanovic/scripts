@@ -2,12 +2,35 @@
 
 cd $HOME/Notes
 
-now=$(date +%Y-%m-%d-%H:%M)
-colored_output -t i -m "Creating a new note."
+new () { 
+    now=$(date +%Y-%m-%d-%H:%M)
+    colored_output -t i -m "Creating a new note."
+    title=$@ 
+    title=$(echo $title | cut -d " " -f2-)
 
-echo "---
-title: $@
-date: $now
----" > $now.md
+    echo $title
 
-nvim $now.md
+    echo "---
+    title: $title
+    date: $now
+    ---" > $now.md
+
+    nvim $now.md
+}
+
+save () {
+    git add -A
+    git commit -m "updated note"
+    git push
+    colored_output -t i -m "Saved notes."
+}
+
+shopt -s extglob
+case "$1" in
+    ?(n|ne|new) )
+        new $@ ;;
+    ?(s|sa|sa|sav|save) )
+        save ;;
+    *)
+        colored_output -t e -m "Unkown Option. Available: note [new *title* | save]"
+esac
