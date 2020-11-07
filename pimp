@@ -1,0 +1,39 @@
+#! /bin/bash
+
+# PImp imports recent pictures
+# Usage: pimp -t [5h|2weeks] -p foldername
+
+while getopts t:p: option 
+do
+case "$option" in
+t) DUR=${OPTARG};;
+p) NAME=${OPTARG};;
+esac
+done
+
+# mount the sd card
+sudo mount /dev/sda1 /mnt/usb
+
+if [ $? -eq 0 ] ;
+then
+    colored_output -t s -m "SD card mounted."
+else
+    colored_output -t e -m "SD card not mounted. Exiting."
+    exit
+fi
+
+# check if rhea is mounted
+sudo mount | rg "Pictures"
+if [ $? -eq 0 ] ;
+then
+    colored_output -t s -m "Rhea mounted."
+else 
+    colored_output -t e -m "Rhea not mounted. Exiting."
+    exit
+fi
+
+colored_output -t i -m "Copying pictures."
+path="$HOME/Pictures/$(date +%Y)/$(date +%Y-%m-%d)-$NAME"
+mkdir $path
+fd ".jpg" /mnt/usb --changed-within "$DUR" -x cp {} $path
+
