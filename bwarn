@@ -1,0 +1,12 @@
+#! /bin/bash
+# Sends a warning notification if the battery is low.
+
+while [ 1 ] ;
+do
+    per=$(acpi --battery | cut -d " " -f4 | head -c 3 | tr -d %)
+    if [[ $per -le "10" ]] ; 
+    then
+        notify-send "⚡Battery Low." "$per% remaining. Plug in."
+    fi
+    sleep 5m
+done
