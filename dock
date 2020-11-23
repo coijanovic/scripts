@@ -1,0 +1,51 @@
+#! /bin/sh
+# This script detects if and where the computer is docked 
+# and applies appropirate settings
+
+DOCK="none"
+
+which_dock () {
+    lsusb | rg "CalDigit"
+    a=$?
+    lsusb | rg "Lenovo"
+    b=$?
+    if [ $a -eq "0" ] ;
+    then
+        colored_output -t i -m "Detected CalDigit dock."
+        DOCK="home"
+    elif [ $b -eq "0" ] ;
+    then
+        colored_output -t i -m "Detected Lenovo dock."
+        DOCK="work"
+    else
+        colored_output -t i -m "No dock detected."
+    fi
+}
+
+which_dock
+
+if [ "$DOCK" = "home" ] ;
+then
+    sway workspace 10
+    m1='Dell Inc. DELL U2718Q FN84K83Q1LPL'
+    # set font size
+    sed -i -e "s/size: ..../size: 13.0/g" $HOME/.config/alacritty/alacritty.yml
+
+    # move workspaces
+    for i in $(seq 1 9) ;
+    do
+        swaymsg workspace $i, move workspace to "'$m1'"
+    done
+    sway workspace 1
+elif [ "$DOCK" = "work" ] ;
+then
+    sed -i -e "s/size: ..../size: 11.0/g" $HOME/.config/alacritty/alacritty.yml
+    sway output DP-5 transform 270
+    sway output DP-5 position 0 0
+    sway output DP-4 position 1080 220
+    sway output eDP-1 position 3000 1050
+else
+    sed -i -e "s/size: ..../size: 11.5/g" $HOME/.config/alacritty/alacritty.yml
+    sway output eDP-1 position 0 0
+fi
+colored_output -t s -m "Finished."
