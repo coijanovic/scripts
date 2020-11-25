@@ -1,0 +1,8 @@
+#! /bin/bash
+# Interactivly select a password from pass using fzf and copy it with wl-copy
+
+od=$(pwd)
+cd $HOME/.password-store
+p=$(fd . | fzf | cut -d "." -f1)
+pass $p | head -n 1 | wl-copy
+cd $od
