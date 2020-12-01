@@ -3,6 +3,6 @@
 
 od=$(pwd)
 cd $HOME/.password-store
-p=$(fd . | fzf | cut -d "." -f1)
+p=$(fd -t f . | fzf | cut -d "." -f1)
 pass $p | head -n 1 | wl-copy
 cd $od
