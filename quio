@@ -1,0 +1,14 @@
+#! /bin/bash
+# switch PulseAudio default inputs/outputs with fzf
+
+# Usage: quio [i/o]
+
+if [ "$1" == "i" ]; then
+    input=$(pactl list | rg "Name: alsa_input" | cut -d " " -f2 | fzf)
+    pactl set-default-source $input
+elif [ "$1" == "o" ]; then
+    output=$(pactl list | rg "Name: alsa_output" | cut -d " " -f2 | fzf)
+    pactl set-default-sink $output
+else
+    colored_output -t e -m "Unknown option. Use quio [i/o]."
+fi
