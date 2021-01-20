@@ -40,10 +40,22 @@ then
 elif [ "$DOCK" = "work" ] ;
 then
     sed -i -e "s/size: ..../size: 11.0/g" $HOME/.config/alacritty/alacritty.yml
-    sway output DP-5 transform 270
-    sway output DP-5 position 0 0
-    sway output DP-4 position 1080 220
+    m1='Fujitsu Siemens Computers GmbH B24-8 TE Pro YV9S785063'
+    m2='Dell Inc. DELL P2419H CY2Y843'
+    sway output $m2 position 0 0
+    sway output $m2 transform 270
+    sway output $m1 position 1080 220
     sway output eDP-1 position 3000 1050
+    # move workspaces
+    for i in $(seq 1 5) ;
+    do
+        swaymsg workspace $i, move workspace to "'$m1'"
+    done
+    for i in $(seq 6 9) ;
+    do
+        swaymsg workspace $i, move workspace to "'$m2'"
+    done
+    sway workspace 1
 else
     sed -i -e "s/size: ..../size: 11.5/g" $HOME/.config/alacritty/alacritty.yml
     sway output eDP-1 position 0 0
