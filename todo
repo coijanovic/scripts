@@ -1,0 +1,31 @@
+#! /bin/bash
+# todo is a plain-text minimal networked todo app
+
+remote="rhea"
+tododir="/mnt/data/Documents/todo"
+# adds a new todo
+add () {
+    colored_output -t i -m "Adding a new TODO"
+    read -p "What needs to be done? " content
+    read -p "How urgent is it? [0-5] " prio
+    line="[$prio] - $content - [ ]"
+    echo $line
+    ssh rhea "echo $line >> $tododir/todo"
+}
+show () {
+    scp rhea:$tododir/todo /tmp/todo
+    cat /tmp/todo | rg "\[ \]" | cut -d "-" -f 1,2 | sort -r 
+    rm /tmp/todo
+}
+edit () {
+    scp rhea:$tododir/todo /tmp/todo
+    nvim /tmp/todo
+    scp /tmp/todo rhea:$tododir/
+}
+if [ "$1" == "add" ]; then
+    add
+elif [ "$1" == "edit" ]; then
+    edit
+else
+    show
+fi
