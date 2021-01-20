@@ -21,6 +21,7 @@ edit () {
     scp rhea:$tododir/todo /tmp/todo
     nvim /tmp/todo
     scp /tmp/todo rhea:$tododir/
+    rm /tmp/todo
 }
 if [ "$1" == "add" ]; then
     add
