@@ -8,14 +8,16 @@ add () {
     colored_output -t i -m "Adding a new TODO"
     read -p "What needs to be done? " content
     read -p "How urgent is it? [0-5] " prio
-    line="[$prio] - $content - [ ]"
-    echo $line
-    ssh rhea "echo $line >> $tododir/todo"
+    data=$(jq -n \
+        --arg c "$content" \
+        --arg p "$prio" \
+        '{content: $c, prio: $p}')
+    curl -H "Content-Type: application/json" \
+        -d "$data" \
+        http://rhea.local:8000/add
 }
 show () {
-    scp rhea:$tododir/todo /tmp/todo
-    cat /tmp/todo | rg "\[ \]" | cut -d "-" -f 1,2 | sort -r 
-    rm /tmp/todo
+    curl http://rhea.local:8000/tasks
 }
 edit () {
     scp rhea:$tododir/todo /tmp/todo
