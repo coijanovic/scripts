@@ -12,18 +12,16 @@ add () {
         --arg c "$content" \
         --arg p "$prio" \
         '{content: $c, prio: $p}')
-    curl -H "Content-Type: application/json" \
+    curl -s -H "Content-Type: application/json" \
         -d "$data" \
         http://rhea.local:8000/add
 }
 show () {
-    curl http://rhea.local:8000/tasks
+    curl -s http://rhea.local:8000/todos/open
 }
 edit () {
-    scp rhea:$tododir/todo /tmp/todo
-    nvim /tmp/todo
-    scp /tmp/todo rhea:$tododir/
-    rm /tmp/todo
+    d=$(curl -s http://rhea.local:8000/todos/open | fzf | cut -d "-" -f 2 | sed 's/^ //g;s/ /%20/g')
+    curl -s http://rhea.local:8000/done/"$d"
 }
 if [ "$1" == "add" ]; then
     add
