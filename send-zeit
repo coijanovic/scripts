@@ -1,0 +1,15 @@
+#! /bin/bash
+#  1. opens a chromium window to let you download the zeit mobi version
+#  2. sends it to the kindles
+
+sway exec "chromium-browser https://epaper.zeit.de"
+
+read -p "Downloaded? " i
+
+zfile=$(fd 'zeit' $HOME/Downloads)
+
+calibre-smtp mail@coijanovic.com coijanovic@kindle.com "sent with send-zeit" -s "zeit" -a "$zfile" 
+colored_output -t s -m "Sent to Christoph."
+calibre-smtp mail@coijanovic.com saskiabayreuther@kindle.com "sent with send-zeit" -s "zeit" -a "$zfile" 
+colored_output -t s -m "Sent to Saskia."
+
