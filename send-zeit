@@ -12,4 +12,4 @@ calibre-smtp mail@coijanovic.com coijanovic@kindle.com "sent with send-zeit" -s 
 colored_output -t s -m "Sent to Christoph."
 calibre-smtp mail@coijanovic.com saskiabayreuther@kindle.com "sent with send-zeit" -s "zeit" -a "$zfile" 
 colored_output -t s -m "Sent to Saskia."
-
+rm $zfile
