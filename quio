@@ -2,6 +2,7 @@
 # switch PulseAudio default inputs/outputs with fzf
 
 # Usage: quio [i/o]
+sudo udevadm trigger
 
 if [ "$1" == "i" ]; then
     input=$(pactl list | rg "Name: alsa_input" | cut -d " " -f2 | fzf)

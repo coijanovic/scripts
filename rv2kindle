@@ -1,0 +1,26 @@
+#! /bin/bash
+#
+# 1. Open article in firefox's reader view
+# 2. Right-Click > Save Page as > ...
+# 3. rv2mobi /link/to/articlename (without file extension)
+# 4. Output: aritcle in .mobi format
+
+cdir=$PWD
+
+afile="$1"
+afolder="$(echo $1 | cut -d "." -f1)_files"
+
+# get title and author
+atitle="$(cat $afile | pup 'title' | sed -n '2p')"
+aauthor="$(cat $afile | pup '.credits' | sed -n '2p')"
+
+# filter content
+cat $afile | pup '.content' > /tmp/art.html
+ 
+cp -r $afolder /tmp/
+cd /tmp/
+
+ebook-convert /tmp/art.html /tmp/art.mobi --authors "$aauthor" --title "$atitle"
+calibre-smtp mail@coijanovic.com coijanovic@kindle.com "sent with rv2kindle" -s "your article" -a "/tmp/art.mobi"
+
+cd $cdir
