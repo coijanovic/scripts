@@ -16,10 +16,10 @@ work () {
     sway exec "firefox-wayland $riot_url $board_url"
     sway for_window [app_id="firefox"] move workspace 2
 
-    sway exec "thunderbird"
-    sway for_window [class="Thunderbird"] move workspace 3
-    pass KIT/Christoph/Thunderbird | wl-copy
-    colored_output -t i -m "Thunderbird password copied to clipboard."
+    # sway exec "flatpak run org.mozilla.Thunderbird"
+    # sway for_window [class="Thunderbird"] move workspace 3
+    # pass KIT/Christoph/Thunderbird | wl-copy
+    # colored_output -t i -m "Thunderbird password copied to clipboard."
 
     sway exec "okular"
     sway for_window [app_id="okular"] move workspace 6

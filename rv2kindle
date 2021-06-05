@@ -22,5 +22,6 @@ cd /tmp/
 
 ebook-convert /tmp/art.html /tmp/art.mobi --authors "$aauthor" --title "$atitle"
 calibre-smtp mail@coijanovic.com coijanovic@kindle.com "sent with rv2kindle" -s "your article" -a "/tmp/art.mobi"
+#calibre-smtp mail@coijanovic.com saskiabayreuther@kindle.com "sent with rv2kindle" -s "your article" -a "/tmp/art.mobi"
 
 cd $cdir
