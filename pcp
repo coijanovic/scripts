@@ -4,5 +4,6 @@
 od=$(pwd)
 cd $HOME/.password-store
 p=$(fd -t f . | cut -d "." -f1 | fzf)
-pass $p | head -n 1 | wl-copy
+file=$(gpg --pinentry-mode loopback -d /home/christoph/.password-store/Ikea.gpg)
+pass -c $p
 cd $od

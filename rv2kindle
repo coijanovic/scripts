@@ -17,11 +17,7 @@ aauthor="$(cat $afile | pup '.credits' | sed -n '2p')"
 # filter content
 cat $afile | pup '.content' > /tmp/art.html
  
-cp -r $afolder /tmp/
-cd /tmp/
 
-ebook-convert /tmp/art.html /tmp/art.mobi --authors "$aauthor" --title "$atitle"
-calibre-smtp mail@coijanovic.com coijanovic@kindle.com "sent with rv2kindle" -s "your article" -a "/tmp/art.mobi"
-#calibre-smtp mail@coijanovic.com saskiabayreuther@kindle.com "sent with rv2kindle" -s "your article" -a "/tmp/art.mobi"
+ebook-convert /tmp/art.html $cdir/$(date +%s).mobi --authors "$aauthor" --title "$atitle"
 
 cd $cdir
