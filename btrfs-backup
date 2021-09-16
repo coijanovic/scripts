@@ -1,0 +1,33 @@
+#!/bin/bash
+
+BU_IN_PATH="/var/home/christoph/.snapshots"
+BU_EX_PATH="/run/media/christoph/a49622ce-b208-4a61-8529-7a5677eb7b52"
+BU_PREVIOUS="$(ls $BU_IN_PATH | tail -n 1)"
+
+# make local snapshot
+BU_CURRENT="$(hostname)-$(date +%s)"
+sudo btrfs subvolume snapshot -r /home $BU_IN_PATH/$BU_CURRENT
+
+# cleanup: only keep 10 most recent snapshots locally
+BU_IN_COUNT="$(ls $BU_IN_PATH | wc -l)"
+echo $BU_IN_COUNT
+if [ $BU_IN_COUNT -ge 10 ]; then
+    BU_OLDEST="$(ls $BU_IN_PATH | head -n 1)"
+    echo "cleanup, deleting $BU_OLDEST"
+    sudo btrfs subvolume delete $BU_IN_PATH/$BU_OLDEST
+fi
+
+# check if external drive is connected
+if [ ! -d "$BU_EX_PATH" ]; then
+    exit
+fi
+
+if [ -d "$BU_EX_PATH/$BU_PREVIOUS" ]; then
+    echo "incremental backup"
+    sudo btrfs send -p $BU_IN_PATH/$BU_PREVIOUS $BU_IN_PATH/$BU_CURRENT | sudo btrfs receive $BU_EX_PATH
+else
+    echo "nonincremental backup - $BU_EX_PATH/$BU_PREVIOUS not found"
+    sudo btrfs send $BU_IN_PATH/$BU_CURRENT | sudo btrfs receive $BU_EX_PATH
+fi
+
+
