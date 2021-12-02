@@ -1,0 +1,23 @@
+#!/bin/bash
+
+for SUB in documents images pictures
+do
+    BU_IN_PATH="/mnt/data/snapshots"
+    BU_EX_PATH="/mnt/archive/snapshots"
+    BU_PREVIOUS="$(ls $BU_IN_PATH | grep "$SUB" | tail -n 1)"
+
+    # make local snapshot
+    BU_CURRENT="$(hostname)-$SUB-$(date +%s)"
+    sudo btrfs subvolume snapshot -r /mnt/data/share/$SUB $BU_IN_PATH/$BU_CURRENT
+
+    if [ -d "$BU_EX_PATH/$BU_PREVIOUS" ]; then
+        echo "incremental backup"
+        sudo btrfs send -p $BU_IN_PATH/$BU_PREVIOUS $BU_IN_PATH/$BU_CURRENT | sudo btrfs receive $BU_EX_PATH
+    else
+        echo "nonincremental backup - $BU_EX_PATH/$BU_PREVIOUS not found"
+        sudo btrfs send $BU_IN_PATH/$BU_CURRENT | sudo btrfs receive $BU_EX_PATH
+    fi
+
+    # cleanup: delete previos local snapshot
+    sudo btrfs subvolume delete $BU_IN_PATH/$BU_PREVIOUS
+done

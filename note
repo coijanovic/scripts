@@ -5,7 +5,7 @@ cd $HOME/Notes
 
 new () { 
     now=$(date +%Y-%m-%d-%H:%M)
-    nvim $now.md
+    vi $now.md
 }
 
 push () {
